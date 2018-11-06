@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Othello JS</title>
+  <link rel="stylesheet" href="./scripts/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./scripts/css/app.css">
+  <script src="./scripts/js/jquery-3.3.1.min.js"></script>
+  <script src="./scripts/js/socket.io.js"></script>
+</head>
+
+<body>
+
+  <div class="game-header">
+    <div>
+      <div>
+        <h3>SWD391 - Assignment 2</h3>
+        <p>Hà Văn Thái<br />
+          Đỗ Tri Thức<br />
+          Nguyễn Quang Kiên<br />
+          Trương Thế Bảo<br />
+          Quách Hoành Sơn<br />
+        </p>
+      </div>
+    </div>
+    <div class="header-name">
+      <h1>OTHELLO</h1>
+    </div>
+    <div class="header-game-info">
+      <div>
+        <h3>Hello, <span id="player-name">Player</span></h3>
+        <h3>Your room: <span id="room-number">xxxx</span></h3>
+        <br />
+        <p>
+          <input id="friend-room-number" type="text" placeholder="Enter your friend's room">
+          <button id="btn-join">Join</button>
+        </p>
+      </div>
+      <br /><br /><br /><br /><br />
+      <div class="game-point">
+        <h2>Won: <span id="total-won">xx</span> - Lost: <span id="total-lost">xx</span></h2>
+        <h2>White: <span id="white-score"></span></h2>
+        <h2>Black: <span id="black-score"></span></h2>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-board"></div>
+
+  <div id="enter-name-screen">
+    <div class="mask"></div>
+    <div class="name-box form-group">
+      <h3>OTHELLO</h3>
+      <div class="label"><b>Enter your name: </b></div>
+      <div><input id="player-name-input" class="form-control" type="text"></div>
+      <div><button id="enter-name-button" class="btn">Enter</button></div>
+    </div>
+  </div>
+
+  <div id="game-finish-popup">
+    <h1 id="game-result"></h1>
+    <h3 id="game-finish-message"></h3>
+    <div><button id="game-finish-ok-button">OK</button></div>
+  </div>
+
+  <!-- SOCKET -->
+  <script src="./models/SocketManager.js"></script>
+
+  <!-- MODEL -->
+  <script src="./models/Model.js"></script>
+  <script src="./models/constants/BoardMatrixInit.js"></script>
+  <script src="./models/constants/Chess.js"></script>
+  <script src="./models/DataTransfer.js"></script>
+  <script src="models/Move.js"></script>
+  <script src="./models/GameBoardModel.js"></script>
+  <script src="./models/PlayerModel.js"></script>
+  <script src="./models/RoomModel.js"></script>
+  <script src="./models/GameFinishPopupModel.js"></script>
+
+  <!-- VIEW -->
+  <script src="./views/View.js"></script>
+  <script src="./views/GameBoardView.js"></script>
+  <script src="./views/PlayerView.js"></script>
+  <script src="./views/NameInputFormView.js"></script>
+  <script src="./views//RoomView.js"></script>
+  <script src="./views/GameFinishPopupView.js"></script>
+
+  <!-- CONTROLLER -->
+  <script src="./controllers/Controller.js"></script>
+  <script src="./controllers/GameBoardController.js"></script>
+  <script src="./controllers/PlayerController.js"></script>
+  <script src="./controllers/RoomController.js"></script>
+  <script src="./controllers/GameFinishPopupController.js"></script>
+
+  <!-- OTHER -->
+  <script src="./MainApp.js"></script>
+  <script src="./StartUp.js"></script>
+</body>
+
+</html>

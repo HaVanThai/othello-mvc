@@ -1,0 +1,128 @@
+div, table, tr, th, td, span {
+  box-sizing: border-box;
+}
+body {
+  background-color: #0d0d0d;
+}
+.game-header {
+  position: fixed;
+  top: 10px;
+  color: #ffffff;
+  width: 100%;
+}
+.game-header>div {
+  width: 33%;
+  float: left;
+  padding: 10px;
+}
+.game-header::after{
+  clear: both;
+  content: '';
+  display: block;
+}
+.header-name{
+  text-align: center;
+}
+.header-game-info {
+  text-align: right;
+}
+.header-game-info button{
+  background-color: #000000;
+  color: #ffffff;
+  font-weight: bold;
+}
+.header-game-info button:hover{
+  cursor: pointer;
+}
+#white-score, #black-score {
+  display: inline-block;
+  width: 40px;
+}
+#game-board {
+  margin-top: 100px;
+}
+#game-board table {
+  margin: auto;
+}
+.cell{
+    background-color: #1CB700;
+    border: solid 1px #ffffff;
+    width: 60px;
+    height: 60px;
+    padding: 10px;
+}
+
+.disc {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+.white>.disc {
+  background-color: #ffffff;
+}
+
+.black>.disc {
+  background-color: #000000;
+}
+
+.white-possible-move>.disc {
+  background-color: #ffffff;
+  opacity: 0.2;
+}
+
+.black-possible-move>.disc {
+  background-color: #000000;
+  opacity: 0.2;
+}
+
+
+#enter-name-screen{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#enter-name-screen .mask {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  opacity: 0.8;
+}
+
+#enter-name-screen .name-box {
+  background-color: #000000;
+  position: absolute;
+  top: 200px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding: 40px;
+  width: 360px;
+  border: double 10px #1CB700;
+}
+
+#enter-name-screen .name-box>div {
+  margin-bottom: 10px;
+}
+
+#enter-name-box input {
+  opacity: 1 !important;
+}
+
+#game-finish-popup {
+  background-color: #000000;
+  position: absolute;
+  top: 200px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding: 40px;
+  width: 360px;
+  border: double 10px #1CB700;
+  color: #ffffff;
+  display: none;
+}
