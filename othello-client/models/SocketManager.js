@@ -10,6 +10,7 @@ class SocketManager {
     // we declare new variable because in socket.io callback, 'this' is an instance of socket, not this class.
     let self = this;
     this.socket = io.connect(this.host);
+    this.socket.emit('init_socket');
     this.socket.on('init_room', function (room) {
       self.initRoomHandler(room);
     });
