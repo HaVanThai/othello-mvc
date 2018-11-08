@@ -5,6 +5,7 @@ class GameBoardModel extends Model {
     this.lastTurnPlayer = lastTurnPlayer;
     this.score = score;
     this.socketManager = null;
+    this.checkFinish = false;
   }
 
   /**
@@ -76,7 +77,8 @@ class GameBoardModel extends Model {
   isFinished() {
     const isFinished = (this.score[1] + this.score[2]) == this.boardMatrix.length * this.boardMatrix.length;
     const opponentChess = this.playerModel.getChess() == 1 ? 2 : 1;
-    if (isFinished) {
+    if (isFinished && !this.checkFinish) {
+      this.checkFinish = true;
       if (this.score[this.playerModel.getChess()] > this.score[opponentChess]) {
         this.gameFinishPopupModel.setGameFinishAttributes('You won!', 'Congrattulations!');
         this.playerModel.incrementWon();
@@ -96,6 +98,7 @@ class GameBoardModel extends Model {
     this.boardMatrix = JSON.parse(JSON.stringify(BOARD_MATRIX_INIT));
     this.lastTurnPlayer = 2;
     this.score = {1: 2, 2: 2};
+    this.checkFinish = false;
     this.notifyUpdatedData();
   }
 

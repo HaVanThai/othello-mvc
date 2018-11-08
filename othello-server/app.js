@@ -31,20 +31,27 @@ io.on('connection', function (socket) {
 
   // Listen client want to join a friend's room
   socket.on('join_room', function (friend_room) {
-    if (io.sockets.adapter.rooms[friend_room] && io.sockets.adapter.rooms[friend_room].length > 0) {
+    if (io.sockets.adapter.rooms[friend_room]) {
+      if (io.sockets.adapter.rooms[friend_room].length == 0) {
+        socket.emit('joined_room', '-1');
+      } else if (io.sockets.adapter.rooms[friend_room].length == 1) {
 
-      socket.join(friend_room);
-      lstRooms[socket.id] = friend_room;
-
-      // socket.emit() doesn't work at first time so I use io.to(socket.id).emit() instead
-      io.to(socket.id).emit('joined_room', friend_room);
-
-      // emit to your friend that you joined
-      socket.broadcast.in(friend_room).emit('opponent_joined', "Opponent's Name");
-      // room = friend_room;
+        socket.join(friend_room);
+        lstRooms[socket.id] = friend_room;
+  
+        // socket.emit() doesn't work at first time so I use io.to(socket.id).emit() instead
+        io.to(socket.id).emit('joined_room', friend_room);
+  
+        // emit to your friend that you joined
+        socket.broadcast.in(friend_room).emit('opponent_joined', "Opponent's Name");
+        // room = friend_room;
+      } else {
+        socket.emit('joined_room', '-2');
+      }
     } else {
       socket.emit('joined_room', '-1');
     }
+    
   });
 
   // Listen if a player play a new move

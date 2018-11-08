@@ -2,6 +2,7 @@ class RoomModel extends Model {
   constructor(room) {
     super();
     this.room = room;
+    this.errorMessage = '';
     this.socketManager = null;
   }
 
@@ -19,6 +20,15 @@ class RoomModel extends Model {
    */
   setRoom(room) {
     this.room = room;
+    this.notifyUpdatedData();
+  }
+
+  /**
+   * Set errorMessage
+   * @param errorMessage String
+   */
+  setErrorMessage(errorMessage) {
+    this.errorMessage = errorMessage;
     this.notifyUpdatedData();
   }
 

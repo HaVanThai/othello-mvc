@@ -5,6 +5,7 @@ class RoomView extends View {
 
   updateView() {
     this.drawRoomNo();
+    this.displayErrorMessage();
   }
 
   init() {
@@ -23,5 +24,11 @@ class RoomView extends View {
   drawRoomNo() {
     $('#friend-room-number').val('');
     $('#room-number').text(this.model.room);
+  }
+
+  displayErrorMessage() {
+    if(this.model.errorMessage != '') {
+      alert(this.model.errorMessage);
+    }
   }
 }

@@ -44,7 +44,8 @@ class GameBoardView extends View {
     const possibleMoves = gameBoardController.getPossibleMoves();
     if (possibleMoves == null) {
       // It's not you turn, do nothing
-    } else if (possibleMoves.length == 0) {
+    } else if (possibleMoves.length == 0 && 
+      (this.model.score[1] + this.model.score[2]) < this.model.boardMatrix.length * this.model.boardMatrix.length) {
       // If player can't play any move, We skip and switch to opponent turn
       gameBoardController.skipTurn();
     } else {

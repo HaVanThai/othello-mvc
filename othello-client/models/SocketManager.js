@@ -59,28 +59,30 @@ class SocketManager {
 
   // Handling after connected to a friend's room
   joinedRoomHandler(room) {
-    if (room != '-1') {
-      let gameBoardModel = null;
-      let roomModel = null;
-      let playerModel = null;
-      this.lstModels.forEach(model => {
-        if (model instanceof GameBoardModel) {
-          gameBoardModel = model;
-        }
-        if (model instanceof PlayerModel) {
-          playerModel = model;
-        }
-        if (model instanceof RoomModel) {
-          roomModel = model;
-        }
-      });
-
+    let gameBoardModel = null;
+    let roomModel = null;
+    let playerModel = null;
+    this.lstModels.forEach(model => {
+      if (model instanceof GameBoardModel) {
+        gameBoardModel = model;
+      }
+      if (model instanceof PlayerModel) {
+        playerModel = model;
+      }
+      if (model instanceof RoomModel) {
+        roomModel = model;
+      }
+    });
+    
+    if (room == '-1') {
+      roomModel.setErrorMessage("Your friend's room doesn't exist!");
+    } else if (room == '-2') {
+      roomModel.setErrorMessage("Your friend's room is full!");
+    } else {
       roomModel.setRoom(room);
       playerModel.setChess(2);
       gameBoardModel.setLastTurnPlayer(2);
       console.log('You joined to room ' + room);
-    } else {
-      alert("Your friend's room doesn't exist!");
     }
   }
 
