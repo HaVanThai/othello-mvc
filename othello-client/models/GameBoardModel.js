@@ -6,6 +6,7 @@ class GameBoardModel extends Model {
     this.score = score;
     this.socketManager = null;
     this.checkFinish = false;
+    this.isReady = false;
   }
 
   /**
@@ -31,6 +32,14 @@ class GameBoardModel extends Model {
   setLastTurnPlayer(lastTurnPlayer) {
     this.lastTurnPlayer = lastTurnPlayer;
     this.notifyUpdatedData();
+  }
+
+  /**
+   * Set isReady
+   * @param isReady boolean
+   */
+  setIsReady(isReady) {
+    this.isReady = isReady;
   }
 
   /**
@@ -99,6 +108,7 @@ class GameBoardModel extends Model {
     this.lastTurnPlayer = 2;
     this.score = {1: 2, 2: 2};
     this.checkFinish = false;
+    this.isReady = false;
     this.notifyUpdatedData();
   }
 
@@ -181,7 +191,7 @@ class GameBoardModel extends Model {
    */
   getPossibleMoves() {
     let possibleMoves = null;
-    if (this.lastTurnPlayer != this.playerModel.getChess()) {
+    if (this.isReady && this.lastTurnPlayer != this.playerModel.getChess()) {
       possibleMoves = [];
       let possibleMove = null;
       const boardSize = this.boardMatrix.length;

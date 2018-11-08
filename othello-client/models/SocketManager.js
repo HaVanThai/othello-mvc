@@ -82,6 +82,7 @@ class SocketManager {
       roomModel.setRoom(room);
       playerModel.setChess(2);
       gameBoardModel.setLastTurnPlayer(2);
+      gameBoardModel.setIsReady(true);
       console.log('You joined to room ' + room);
     }
   }
@@ -104,6 +105,7 @@ class SocketManager {
 
   // Handling after a friend joined the room
   opponentJoinedHandler(opponentName) {
+    gameBoardModel.setIsReady(true);
     console.log(opponentName + ' joined.');
   }
 
