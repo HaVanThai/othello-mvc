@@ -26,4 +26,8 @@ class GameBoardController extends Controller {
   getPossibleMoves(playerChess) {
     return this.model.getPossibleMoves(playerChess);
   }
+
+  emitImReady() {
+    this.model.emitImReady();
+  }
 }

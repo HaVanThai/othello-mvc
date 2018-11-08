@@ -118,9 +118,11 @@ class GameBoardModel extends Model {
    */
   emitImReady() {
     if (this.isReady) {
+      console.log('emit-im-ready-too');
       this.socketManager.emitImReadyToo(this.isReady);
       this.notifyUpdatedData();
     } else {
+      console.log('emit-im-ready');
       this.socketManager.emitImReady(this.isReady);
     }
   }

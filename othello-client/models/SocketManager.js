@@ -132,6 +132,7 @@ class SocketManager {
   }
 
   opponentReadyHandler(isReady) {
+    console.log('opponent-ready-handler');
     let gameBoardModel = null;
     this.lstModels.forEach(model => {
       if (model instanceof GameBoardModel) {
@@ -142,6 +143,7 @@ class SocketManager {
   }
 
   opponentReadyTooHandler(isReady) {
+    console.log('opponent-ready-Too-handler');
     let gameBoardModel = null;
     this.lstModels.forEach(model => {
       if (model instanceof GameBoardModel) {

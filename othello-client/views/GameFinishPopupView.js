@@ -20,6 +20,7 @@ class GameFinishPopupView extends View {
     $('#game-finish-ok-button').click(function() {
       self.hideGameFinishPopup();
       gameBoardController.resetGame();
+      gameBoardController.emitImReady();
     });
   }
 
