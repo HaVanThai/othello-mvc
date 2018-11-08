@@ -105,6 +105,13 @@ class SocketManager {
 
   // Handling after a friend joined the room
   opponentJoinedHandler(opponentName) {
+    let gameBoardModel = null;
+    this.lstModels.forEach(model => {
+      if (model instanceof GameBoardModel) {
+        gameBoardModel = model;
+      }
+    });
+
     gameBoardModel.setIsReady(true);
     console.log(opponentName + ' joined.');
   }
