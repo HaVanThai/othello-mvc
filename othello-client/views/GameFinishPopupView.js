@@ -4,7 +4,6 @@ class GameFinishPopupView extends View {
   }
 
   updateView() {
-    debugger;
     this.displayGameFinishPopup();
   }
 

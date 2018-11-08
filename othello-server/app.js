@@ -60,4 +60,13 @@ io.on('connection', function (socket) {
     socket.broadcast.in(lstRooms[socket.id]).emit('new_move', data);
   });
 
+  // Listen if a player is ready
+  socket.on('im_ready', function(isReady) {
+    socket.broadcast.in(lstRooms[socket.id]).emit('opponent_ready', isReady);
+  }); 
+
+  socket.on('im_ready_too', function(isReady) {
+    socket.broadcast.in(lstRooms[socket.id]).emit('opponent_ready_too', isReady);
+  });
+
 });

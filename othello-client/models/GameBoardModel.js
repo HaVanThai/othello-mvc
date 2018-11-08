@@ -112,6 +112,19 @@ class GameBoardModel extends Model {
     this.notifyUpdatedData();
   }
 
+  
+  /**
+   * Emit to opponent that I'm ready to play a new game
+   */
+  emitImReady() {
+    if (this.isReady) {
+      this.socketManager.emitImReadyToo(this.isReady);
+      this.notifyUpdatedData();
+    } else {
+      this.socketManager.emitImReady(this.isReady);
+    }
+  }
+
   /**
    * Update matrix for each new move
    * @param x number

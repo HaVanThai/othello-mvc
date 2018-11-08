@@ -23,6 +23,12 @@ class SocketManager {
     this.socket.on('opponent_joined', function (opponentName) {
       self.opponentJoinedHandler(opponentName);
     });
+    this.socket.on('opponent_ready', function (isReady) {
+      self.opponentReadyHandler(isReady);
+    });
+    this.socket.on('opponent_ready_too', function (isReady) {
+      self.opponentReadyTooHandler(isReady);
+    });
   }
 
   emitNewMove(dataTransfer) {
@@ -31,6 +37,14 @@ class SocketManager {
 
   emitJoinRoomRequest(room) {
     this.socket.emit('join_room', room);
+  }
+
+  emitImReady(isReady) {
+    this.socket.emit('im_ready', isReady);
+  }
+
+  emitImReadyToo(isReady) {
+    this.socket.emit('im_ready_too', isReady);
   }
 
   registerModel(model) {
@@ -113,7 +127,28 @@ class SocketManager {
     });
 
     gameBoardModel.setIsReady(true);
+    gameBoardModel.notifyUpdatedData();
     console.log(opponentName + ' joined.');
+  }
+
+  opponentReadyHandler(isReady) {
+    let gameBoardModel = null;
+    this.lstModels.forEach(model => {
+      if (model instanceof GameBoardModel) {
+        gameBoardModel = model;
+      }
+    });
+    gameBoardModel.setIsReady(isReady);
+  }
+
+  opponentReadyTooHandler(isReady) {
+    let gameBoardModel = null;
+    this.lstModels.forEach(model => {
+      if (model instanceof GameBoardModel) {
+        gameBoardModel = model;
+      }
+    });
+    gameBoardModel.notifyUpdatedData();
   }
 
 }
