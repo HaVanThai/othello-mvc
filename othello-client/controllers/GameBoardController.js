@@ -30,4 +30,5 @@ class GameBoardController extends Controller {
   emitImReady() {
     this.model.emitImReady();
   }
+
 }

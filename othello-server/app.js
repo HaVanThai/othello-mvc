@@ -15,6 +15,10 @@ function handler(req, res) {
 
 io.on('connection', function (socket) {
 
+  socket.on('disconnect', function() {
+    socket.broadcast.in(lstRooms[socket.id]).emit('opponent_disconnect');
+  })
+
   // Init socket
   socket.on('init_socket', function () {
     // Create new client socket
@@ -61,12 +65,13 @@ io.on('connection', function (socket) {
   });
 
   // Listen if a player is ready
-  socket.on('im_ready', function(isReady) {
-    socket.broadcast.in(lstRooms[socket.id]).emit('opponent_ready', isReady);
+  socket.on('im_ready', function() {
+    socket.broadcast.in(lstRooms[socket.id]).emit('opponent_ready');
   }); 
 
-  socket.on('im_ready_too', function(isReady) {
-    socket.broadcast.in(lstRooms[socket.id]).emit('opponent_ready_too', isReady);
+  // Listen if both play can't play any move, finish game
+  socket.on('force_finish', function() {
+    socket.broadcast.in(lstRooms[socket.id]).emit('force_finish');
   });
 
 });

@@ -7,6 +7,7 @@ class GameBoardModel extends Model {
     this.socketManager = null;
     this.checkFinish = false;
     this.isReady = false;
+    this.isOpponentReady = false;
   }
 
   /**
@@ -15,6 +16,14 @@ class GameBoardModel extends Model {
    */
   setPlayerModel(playerModel) {
     this.playerModel = playerModel;
+  }
+
+  /**
+   * Set boardMatrix
+   * @param boardMatrix 
+   */
+  setBoardMatrix(boardMatrix) {
+    this.boardMatrix = boardMatrix;
   }
 
   /**
@@ -40,6 +49,14 @@ class GameBoardModel extends Model {
    */
   setIsReady(isReady) {
     this.isReady = isReady;
+  }
+
+  /**
+   * set isOpponentReady
+   * @param isOpponentReady 
+   */
+  setIsOpponentReady(isOpponentReady) {
+    this.isOpponentReady = isOpponentReady;
   }
 
   /**
@@ -85,18 +102,25 @@ class GameBoardModel extends Model {
    */
   isFinished() {
     const isFinished = (this.score[1] + this.score[2]) == this.boardMatrix.length * this.boardMatrix.length;
-    const opponentChess = this.playerModel.getChess() == 1 ? 2 : 1;
     if (isFinished && !this.checkFinish) {
       this.checkFinish = true;
-      if (this.score[this.playerModel.getChess()] > this.score[opponentChess]) {
-        this.gameFinishPopupModel.setGameFinishAttributes('You won!', 'Congrattulations!');
-        this.playerModel.incrementWon();
-      } else if (this.score[1] == this.score[2]) {
-        this.gameFinishPopupModel.setGameFinishAttributes('Wow, draw!', 'You can do better!');
-      } else {
-        this.gameFinishPopupModel.setGameFinishAttributes('You lost!', 'You can do better!');
-        this.playerModel.incrementLost();
-      }
+      this.handleGameFinish();
+    }
+  }
+
+  /**
+   * Handle game finish
+   */
+  handleGameFinish() {
+    const opponentChess = this.playerModel.getChess() == 1 ? 2 : 1;
+    if (this.score[this.playerModel.getChess()] > this.score[opponentChess]) {
+      this.gameFinishPopupModel.setGameFinishAttributes('You won!', 'Congrattulations!');
+      this.playerModel.incrementWon();
+    } else if (this.score[1] == this.score[2]) {
+      this.gameFinishPopupModel.setGameFinishAttributes('Wow, draw!', 'You can do better!');
+    } else {
+      this.gameFinishPopupModel.setGameFinishAttributes('You lost!', 'You can do better!');
+      this.playerModel.incrementLost();
     }
   }
 
@@ -106,24 +130,27 @@ class GameBoardModel extends Model {
   resetGame() {
     this.boardMatrix = JSON.parse(JSON.stringify(BOARD_MATRIX_INIT));
     this.lastTurnPlayer = 2;
-    this.score = {1: 2, 2: 2};
+    this.score = { 1: 2, 2: 2 };
     this.checkFinish = false;
     this.isReady = false;
     this.notifyUpdatedData();
   }
 
-  
+
   /**
    * Emit to opponent that I'm ready to play a new game
    */
   emitImReady() {
-    if (this.isReady) {
-      console.log('emit-im-ready-too');
-      this.socketManager.emitImReadyToo(this.isReady);
+    if (this.playerModel.getChess() == 2) {
+      this.socketManager.emitImReady();
+      this.isReady = true;
       this.notifyUpdatedData();
     } else {
-      console.log('emit-im-ready');
-      this.socketManager.emitImReady(this.isReady);
+      if (this.isOpponentReady) {
+        this.isOpponentReady = false;
+        this.isReady = true;
+        this.notifyUpdatedData();
+      }
     }
   }
 

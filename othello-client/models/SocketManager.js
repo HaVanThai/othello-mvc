@@ -3,7 +3,10 @@ class SocketManager {
   constructor(host) {
     this.host = host;
     this.socket = null;
-    this.lstModels = [];
+  }
+
+  setGameManager(gameManager) {
+    this.gameManager = gameManager;
   }
 
   init() {
@@ -11,6 +14,9 @@ class SocketManager {
     let self = this;
     this.socket = io.connect(this.host);
     this.socket.emit('init_socket');
+    this.socket.on('opponent_disconnect', function () {
+      self.opponentDisconnectHandler();
+    });
     this.socket.on('init_room', function (room) {
       self.initRoomHandler(room);
     });
@@ -23,11 +29,11 @@ class SocketManager {
     this.socket.on('opponent_joined', function (opponentName) {
       self.opponentJoinedHandler(opponentName);
     });
-    this.socket.on('opponent_ready', function (isReady) {
-      self.opponentReadyHandler(isReady);
+    this.socket.on('opponent_ready', function () {
+      self.opponentReadyHandler();
     });
-    this.socket.on('opponent_ready_too', function (isReady) {
-      self.opponentReadyTooHandler(isReady);
+    this.socket.on('force_finish', function () {
+      self.forceFinishHandler();
     });
   }
 
@@ -39,118 +45,63 @@ class SocketManager {
     this.socket.emit('join_room', room);
   }
 
-  emitImReady(isReady) {
-    this.socket.emit('im_ready', isReady);
-  }
-
-  emitImReadyToo(isReady) {
-    this.socket.emit('im_ready_too', isReady);
-  }
-
-  registerModel(model) {
-    this.lstModels.push(model);
-  }
-
-  unRegisterModel(model) {
-    const index = this.lstModels.indexOf(model);
-    if (index > -1) {
-      this.lstModels.splice(index, 1);
-    }
+  emitImReady() {
+    this.socket.emit('im_ready');
   }
 
   // Handling after a new room was created
   initRoomHandler(room) {
-    let roomModel = null;
-    this.lstModels.forEach(model => {
-      if (model instanceof RoomModel) {
-        roomModel = model;
-      }
-    });
-
-    roomModel.setRoom(room);
+    this.gameManager.setRoom(room);
     console.log('My room is ' + room);
+  }
+
+  // 
+  opponentDisconnectHandler() {
+    this.gameManager.resetGame();
   }
 
   // Handling after connected to a friend's room
   joinedRoomHandler(room) {
-    let gameBoardModel = null;
-    let roomModel = null;
-    let playerModel = null;
-    this.lstModels.forEach(model => {
-      if (model instanceof GameBoardModel) {
-        gameBoardModel = model;
-      }
-      if (model instanceof PlayerModel) {
-        playerModel = model;
-      }
-      if (model instanceof RoomModel) {
-        roomModel = model;
-      }
-    });
-    
     if (room == '-1') {
-      roomModel.setErrorMessage("Your friend's room doesn't exist!");
+      this.gameManager.setErrorMessage("Your friend's room doesn't exist!");
     } else if (room == '-2') {
-      roomModel.setErrorMessage("Your friend's room is full!");
+      this.gameManager.setErrorMessage("Your friend's room is full!");
     } else {
-      roomModel.setRoom(room);
-      playerModel.setChess(2);
-      gameBoardModel.setLastTurnPlayer(2);
-      gameBoardModel.setIsReady(true);
+      this.gameManager.setRoom(room);
+      this.gameManager.setChess(2);
+      this.gameManager.setLastTurnPlayer(2);
+      this.gameManager.setIsReady(true);
       console.log('You joined to room ' + room);
     }
   }
 
   // Update gameBoard after the opponent play a new move
   newMoveHandler(data) {
-    let gameBoardModel = null;
-    this.lstModels.forEach(model => {
-      if (model instanceof GameBoardModel) {
-        gameBoardModel = model;
-      }
-    });
     const dataTransfer = Object.assign({}, data);
-    gameBoardModel.boardMatrix = dataTransfer.boardMatrix;
-    gameBoardModel.lastTurnPlayer = dataTransfer.lastTurnPlayer;
-    gameBoardModel.calcScore();
-    gameBoardModel.isFinished();
-    gameBoardModel.notifyUpdatedData();
+    this.gameManager.setBoardMatrix(dataTransfer.boardMatrix);
+    this.gameManager.setLastTurnPlayer(dataTransfer.lastTurnPlayer);
+    this.gameManager.calcScore();
+    this.gameManager.isFinished();
+    this.gameManager.notifyUpdatedDataGameBoardModel()
   }
 
   // Handling after a friend joined the room
   opponentJoinedHandler(opponentName) {
-    let gameBoardModel = null;
-    this.lstModels.forEach(model => {
-      if (model instanceof GameBoardModel) {
-        gameBoardModel = model;
-      }
-    });
-
-    gameBoardModel.setIsReady(true);
-    gameBoardModel.notifyUpdatedData();
+    this.gameManager.resetGame();
+    this.gameManager.setIsReady(true);
+    this.gameManager.notifyUpdatedDataGameBoardModel();
     console.log(opponentName + ' joined.');
   }
 
   opponentReadyHandler(isReady) {
     console.log('opponent-ready-handler');
-    let gameBoardModel = null;
-    this.lstModels.forEach(model => {
-      if (model instanceof GameBoardModel) {
-        gameBoardModel = model;
-      }
-    });
-    gameBoardModel.setIsReady(isReady);
+    this.gameManager.setIsReady(true);
+    this.gameManager.setIsOpponentReady(true);
+    this.gameManager.notifyUpdatedDataGameBoardModel();
   }
 
-  opponentReadyTooHandler(isReady) {
-    console.log('opponent-ready-Too-handler');
-    let gameBoardModel = null;
-    this.lstModels.forEach(model => {
-      if (model instanceof GameBoardModel) {
-        gameBoardModel = model;
-      }
-    });
-    gameBoardModel.notifyUpdatedData();
+  forceFinishHandler() {
+    // this.gameManager.handleGameFinish();
   }
 
 }

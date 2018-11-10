@@ -14,6 +14,7 @@ class MainApp {
     let roomModel = new RoomModel('');
     let gameFinishPopupModel = new GameFinishPopupModel('', '');
     let gameBoardModel = new GameBoardModel(JSON.parse(JSON.stringify(BOARD_MATRIX_INIT)), 2, {1: 2, 2: 2});
+    let gameManager = new GameManager(gameBoardModel, playerModel, roomModel);
 
     // Init views
     let gameBoardView = new GameBoardView(gameBoardModel);
@@ -33,9 +34,7 @@ class MainApp {
     gameBoardModel.setGameFinishPopupModel(gameFinishPopupModel);
 
     // Register socket and models
-    socketManager.registerModel(gameBoardModel);
-    socketManager.registerModel(roomModel);
-    socketManager.registerModel(playerModel);
+    socketManager.setGameManager(gameManager);
     gameBoardModel.registerSocketManager(socketManager);
     roomModel.registerSocketManager(socketManager);
 
