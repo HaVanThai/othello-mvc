@@ -29,7 +29,7 @@ class PlayerModel extends Model {
    */
   setChess(chess) {
     this.chess = chess;
-    this.notifyUpdatedData();
+    // this.notifyUpdatedData();
   }
 
   /**

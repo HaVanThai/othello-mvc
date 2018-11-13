@@ -69,8 +69,7 @@ class SocketManager {
     } else {
       this.gameManager.setRoom(room);
       this.gameManager.setChess(2);
-      this.gameManager.setLastTurnPlayer(2);
-      this.gameManager.setIsReady(true);
+      this.gameManager.handleGameReady();
       console.log('You joined to room ' + room);
     }
   }
@@ -78,18 +77,12 @@ class SocketManager {
   // Update gameBoard after the opponent play a new move
   newMoveHandler(data) {
     const dataTransfer = Object.assign({}, data);
-    this.gameManager.setBoardMatrix(dataTransfer.boardMatrix);
-    this.gameManager.setLastTurnPlayer(dataTransfer.lastTurnPlayer);
-    this.gameManager.calcScore();
-    this.gameManager.isFinished();
-    this.gameManager.notifyUpdatedDataGameBoardModel()
+    this.gameManager.newMoveHandler(dataTransfer);
   }
 
   // Handling after a friend joined the room
   opponentJoinedHandler(opponentName) {
-    this.gameManager.resetGame();
-    this.gameManager.setIsReady(true);
-    this.gameManager.notifyUpdatedDataGameBoardModel();
+    this.gameManager.handleGameReadyAndNotify();
     console.log(opponentName + ' joined.');
   }
 

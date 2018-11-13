@@ -9,6 +9,14 @@ class GameManager {
     this.gameBoardModel.resetGame();
   }
 
+  handleGameReady() {
+    this.gameBoardModel.handleGameReady();
+  }
+
+  handleGameReadyAndNotify() {
+    this.gameBoardModel.handleGameReadyAndNotify();
+  }
+
   setBoardMatrix(boardMatrix) {
     this.gameBoardModel.setBoardMatrix(boardMatrix);
   }
@@ -51,6 +59,10 @@ class GameManager {
 
   handleGameFinish() {
     this.gameBoardModel.handleGameFinish();
+  }
+
+  newMoveHandler(dataTransfer) {
+    this.gameBoardModel.newMoveHandler(dataTransfer);
   }
 
 }

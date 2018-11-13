@@ -40,7 +40,7 @@ class MainApp {
 
     // Register controllers to views
     gameBoardView.registerController(gameBoardController);
-    gameBoardView.registerController(playerController);
+    // gameBoardView.registerController(playerController);
     playerView.registerController(playerController);
     nameInputFormView.registerController(playerController);
     roomView.registerController(roomController);

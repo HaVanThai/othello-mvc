@@ -116,7 +116,7 @@ class GameBoardModel extends Model {
     if (this.score[this.playerModel.getChess()] > this.score[opponentChess]) {
       this.gameFinishPopupModel.setGameFinishAttributes('You won!', 'Congrattulations!');
       this.playerModel.incrementWon();
-    } else if (this.score[1] == this.score[2]) {
+    } else if (this.score[this.playerModel.getChess()] == this.score[opponentChess]) {
       this.gameFinishPopupModel.setGameFinishAttributes('Wow, draw!', 'You can do better!');
     } else {
       this.gameFinishPopupModel.setGameFinishAttributes('You lost!', 'You can do better!');
@@ -136,6 +136,32 @@ class GameBoardModel extends Model {
     this.notifyUpdatedData();
   }
 
+  /**
+   * set game ready
+   */
+  handleGameReady() {
+    this.boardMatrix = JSON.parse(JSON.stringify(BOARD_MATRIX_INIT));
+    this.lastTurnPlayer = 2;
+    this.score = { 1: 2, 2: 2 };
+    this.checkFinish = false;
+    this.isReady = true;
+  }
+
+  /**
+   * set game ready and notify
+   */
+  handleGameReadyAndNotify() {
+    this.handleGameReady();
+    this.notifyUpdatedData();
+  }
+
+  newMoveHandler(dataTransfer) {
+    this.boardMatrix = dataTransfer.boardMatrix;
+    this.lastTurnPlayer = dataTransfer.lastTurnPlayer;
+    this.calcScore();
+    this.isFinished();
+    this.notifyUpdatedData();
+  }
 
   /**
    * Emit to opponent that I'm ready to play a new game
